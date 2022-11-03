@@ -1,0 +1,25 @@
+
+jwt:
+  secretKey: ecf1222c-88fd-47f3-988f-bdd78bade1ad
+
+server:
+  port: 8010
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: https://m-shaeri.ir
+          predicates:
+            - Path=/guest
+          filters:
+            - StripPrefix=1
+        - id : guest-service
+          uri: https://m-shaeri.ir
+          predicates:
+            - Path=/user
+          filters:
+            - StripPrefix=1
+

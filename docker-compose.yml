@@ -1,0 +1,37 @@
+version: '2.1'
+
+services:
+
+
+  #service 1: user service
+  user-service:
+    image: userservice-image
+    container_name: user-service
+    hostname: userservice-host
+    build :
+      context : ./userservice
+      dockerfile: Dockerfile
+    expose:
+      - "8090"
+    environment:
+      transaction-service_get-transactions-url : transactionservice:8050/api/transactions/getTransactionsByAccountNumber
+      transaction-service_get-balance-url : transactionservice:8050/api/transactions/getBalanceByAccountNumber
+      transaction-service_new-transaction-queue : transaction
+      spring_rabbitmq_addresses : amqp://account_service:1234@rabbitmq/banking
+    restart: always
+
+  apigateway:
+    image: apigateway-image
+    container_name: apigatewayservice
+    hostname: apigatewayservice-host
+    build :
+      context : ./ApiGateWay
+      dockerfile: Dockerfile
+    ports:
+      - '8010:8010'
+    environment:
+      transaction-service_new-transaction-queue : transaction
+      spring_rabbitmq_addresses : amqp://transaction_service:1234@rabbitmq/banking
+    restart: always
+    depends_on:
+      - user-service
