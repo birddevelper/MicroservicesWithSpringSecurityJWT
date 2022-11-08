@@ -71,8 +71,17 @@ public class AuthController {
             if(!tokenProvider.validateToken(refreshTokenRequest.getRefreshToken()))
                 throw new AccessDeniedException("Access denied");
 
-            Authentication authentication = tokenProvider.getAuthentication(refreshTokenRequest.getRefreshToken());
+        log.info(" Refresh process ");
+        log.info(" Username : " + tokenProvider.getAuthentication(refreshTokenRequest.getRefreshToken()).getPrincipal());
 
+
+        String accessToken = this.tokenProvider.createToken(refreshTokenRequest.getRefreshToken(), "access");
+        String refreshToken = this.tokenProvider.createToken(refreshTokenRequest.getRefreshToken(), "refresh");
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse(accessToken,refreshToken);
+        return new ResponseEntity<>(authenticationResponse, httpHeaders, HttpStatus.OK);
 
     }
 

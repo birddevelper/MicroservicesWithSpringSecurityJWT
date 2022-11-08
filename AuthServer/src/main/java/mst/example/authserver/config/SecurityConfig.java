@@ -109,7 +109,7 @@ public class SecurityConfig {
     // Set permissions on endpoints
     http.authorizeRequests()
         // Swagger endpoints must be publicly accessible
-        .antMatchers("/auth/login")
+        .antMatchers("/auth/**" )
         .permitAll()
         // Our private endpoints
         .anyRequest()
