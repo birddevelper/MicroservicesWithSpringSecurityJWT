@@ -22,4 +22,10 @@ spring:
             - Path=/user
           filters:
             - StripPrefix=1
+        - id: auth-service
+          uri: http://authService:8080
+          predicates:
+            - Path=/auth/**
+          filters :
+            - StripPrefix=0
 

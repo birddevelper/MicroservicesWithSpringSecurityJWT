@@ -3,13 +3,13 @@ version: '2.1'
 services:
 
 
-  #service 1: user service
-  user-service:
-    image: userservice-image
-    container_name: user-service
-    hostname: userservice-host
+  #service 1: Authentication service
+  authService:
+    image: auth-service
+    container_name: auth-service
+    hostname: auth-service
     build :
-      context : ./userservice
+      context : ./AuthServer
       dockerfile: Dockerfile
     expose:
       - "8090"
@@ -20,10 +20,22 @@ services:
       spring_rabbitmq_addresses : amqp://account_service:1234@rabbitmq/banking
     restart: always
 
-  apigateway:
-    image: apigateway-image
-    container_name: apigatewayservice
-    hostname: apigatewayservice-host
+  #service 2: Product service
+  productService:
+    image: product-service
+    container_name: product-service
+    hostname: product-service
+    build:
+      context: ./productService
+      dockerfile: Dockerfile
+    expose:
+      - "8080"
+    restart: always
+  #service 3: API Gateway
+  apiGateway:
+    image: apigateway
+    container_name: apigateway
+    hostname: apigateway
     build :
       context : ./ApiGateWay
       dockerfile: Dockerfile
@@ -34,4 +46,5 @@ services:
       spring_rabbitmq_addresses : amqp://transaction_service:1234@rabbitmq/banking
     restart: always
     depends_on:
-      - user-service
+      - authService
+      - productService
