@@ -6,6 +6,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -48,14 +49,14 @@ public class AuthenticationExceptionHelper {
         errorResponseModel.setMessage("Access Denied");
         errorResponseModel.setDescription(ex.getMessage());
 
-        // send response with 401 status code
+        // send response with 301 status code
         return new ResponseEntity(errorResponseModel, HttpStatus.FORBIDDEN);
 
 
     }
 
     // handling MethodArgumentNotValidException
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({MethodArgumentNotValidException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<ErrorResponseModel> handleIInvalidTypeIdException(MethodArgumentNotValidException ex, WebRequest request) {
 
 
@@ -68,10 +69,6 @@ public class AuthenticationExceptionHelper {
 
 
     }
-
-
-
-
 
 
 }

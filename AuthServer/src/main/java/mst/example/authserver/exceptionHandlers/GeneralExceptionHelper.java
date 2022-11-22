@@ -22,7 +22,7 @@ public class GeneralExceptionHelper {
 
         ErrorResponseModel errorResponseModel = new ErrorResponseModel();
         errorResponseModel.setMessage("Internal Error");
-        errorResponseModel.setDescription(ex.getMessage());
+        errorResponseModel.setDescription(ex.getClass().getName());
 
         // send response with 500 status code
         return new ResponseEntity<>(errorResponseModel, HttpStatus.INTERNAL_SERVER_ERROR);
