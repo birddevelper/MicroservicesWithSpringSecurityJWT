@@ -103,6 +103,7 @@ public class SecurityConfig {
     http.exceptionHandling(
         (exceptions) ->
             exceptions
+
                 .authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .accessDeniedHandler((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_FORBIDDEN)));
 
