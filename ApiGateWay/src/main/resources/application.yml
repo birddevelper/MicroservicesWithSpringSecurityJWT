@@ -10,20 +10,14 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: user-service
-          uri: https://m-shaeri.ir
+        - id: product-service
+          uri: http://localhost:8084
           predicates:
-            - Path=/guest
+            - Path=/products/**
           filters:
-            - StripPrefix=1
-        - id : guest-service
-          uri: https://m-shaeri.ir
-          predicates:
-            - Path=/user
-          filters:
-            - StripPrefix=1
+            - StripPrefix=0
         - id: auth-service
-          uri: http://authService:8080
+          uri: http://localhost:8080 #authService
           predicates:
             - Path=/auth/**
           filters :
