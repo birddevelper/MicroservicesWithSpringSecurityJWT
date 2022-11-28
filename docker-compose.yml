@@ -29,7 +29,7 @@ services:
       context: ./productService
       dockerfile: Dockerfile
     expose:
-      - "8080"
+      - "8084"
     restart: always
   #service 3: API Gateway
   apiGateway:

@@ -8,12 +8,12 @@ COPY .mvn .mvn
 
 
 
+# Copy the pom.xml file
+COPY ./pom.xml ./pom.xml
 
 RUN chmod 755 /app/mvnw
 RUN ./mvnw dependency:go-offline -B -Dmaven.artifact.threads=35
 
-# Copy the pom.xml file
-COPY ./pom.xml ./pom.xml
 
 # Copy the project source
 COPY ./src ./src
@@ -21,4 +21,4 @@ COPY ./src ./src
 
 RUN ./mvnw  package
 #RUN ls -al
-ENTRYPOINT ["java","-jar","target/AutherServer-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","target/AuthServer-0.0.1-SNAPSHOT.jar"]
