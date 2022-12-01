@@ -34,10 +34,16 @@ public class JwtTokenProvider {
 
     @PostConstruct
     public void init() {
-        var secret = Base64.getEncoder().encodeToString(this.jwtProperties.getSecretKey().getBytes());
+        String secret = Base64.getEncoder().encodeToString(this.jwtProperties.getSecretKey().getBytes());
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
+    /**
+     * creates jwt access/refresh token
+     * @param authentication
+     * @param tokenType
+     * @return
+     */
     public String createToken(Authentication authentication, String tokenType) {
 
         String username = authentication.getName();
@@ -93,6 +99,11 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
+    /**
+     * Validate the given token
+     * @param token
+     * @return
+     */
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts
