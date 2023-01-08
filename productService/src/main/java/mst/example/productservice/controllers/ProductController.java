@@ -30,4 +30,12 @@ public class ProductController {
 
         return "Hello dear Admin! This endpoint is available to ADMINs only.";
     }
+
+
+    @GetMapping("productList")
+    @PreAuthorize("hasRole('USER')")
+    public String ProductList(){
+
+        return "Products List here!";
+    }
 }
