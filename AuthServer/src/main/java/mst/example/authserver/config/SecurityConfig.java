@@ -72,25 +72,6 @@ public class SecurityConfig {
 
 
 
-  /*
-  protected void getauth(AuthenticationManagerBuilder auth) throws Exception {
-    PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    auth.inMemoryAuthentication()
-            .withUser("admin").password(encoder.encode("admin")).roles("ADMIN", "USER").and()
-            .withUser("mosy").password(encoder.encode("1234")).roles("USER");
-  }
-
-
-  @Bean
-  public AuthenticationManager authenticationManager(
-      HttpSecurity http, PasswordEncoder encoder) throws Exception {
-    return http.getSharedObject(AuthenticationManagerBuilder.class)
-            .inMemoryAuthentication()
-            .withUser("admin").password(encoder.encode("admin")).roles("ADMIN", "USER").and()
-            .withUser("mosy").password(encoder.encode("1234")).roles("USER").and().and().build();
-  }
-*/
-
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     // Enable CORS and disable CSRF
