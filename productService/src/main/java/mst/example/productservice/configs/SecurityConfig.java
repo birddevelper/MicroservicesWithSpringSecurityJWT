@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter;
+  private JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter;
 
   @Autowired
   public SecurityConfig(JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter) {
@@ -51,13 +51,12 @@ public class SecurityConfig {
     http.exceptionHandling(
         (exceptions) ->
             exceptions
-
                 .authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .accessDeniedHandler((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_FORBIDDEN)));
 
     // Set permissions on endpoints
     http.authorizeRequests()
-        // Swagger endpoints must be publicly accessible
+
         .antMatchers("/products/public" )
         .permitAll()
         // Our private endpoints
@@ -66,7 +65,6 @@ public class SecurityConfig {
         .anyRequest()
         .authenticated();
         // Set up oauth2 resource server
-
 
     http.addFilterBefore(jwtTokenAuthenticationFilter,
             UsernamePasswordAuthenticationFilter.class);
