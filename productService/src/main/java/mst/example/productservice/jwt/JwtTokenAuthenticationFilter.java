@@ -27,9 +27,8 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider tokenProvider;
 
 
-
-    private String resolveToken(ServerHttpRequest request) {
-        String bearerToken = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+    private String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(HEADER_PREFIX)) {
             return bearerToken.substring(7);
         }
@@ -38,34 +37,25 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
+        String token = resolveToken(request);
+        if (StringUtils.hasText(token) && this.tokenProvider.validateToken(token)) {
 
-        if (header == null || header.length()==0 || !header.startsWith("Bearer ")) {
+            Authentication authentication = tokenProvider.getAuthentication(token);
+
+            UsernamePasswordAuthenticationToken
+                    usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                    authentication.getPrincipal(), null,
+                    authentication.getPrincipal() == null ?
+                            Arrays.asList() : authentication.getAuthorities()
+            );
+
+            usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             chain.doFilter(request, response);
             return;
         }
 
-        // Get jwt token and validate
-        final String token = header.split(" ")[1].trim();
-        if (!tokenProvider.validateToken(token)) {
-            chain.doFilter(request, response);
-            return;
-        }
-
-
-       Authentication authentication = tokenProvider.getAuthentication(token);
-
-       UsernamePasswordAuthenticationToken
-                usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-               authentication.getPrincipal(), null,
-               authentication.getPrincipal() == null ?
-                       Arrays.asList() : authentication.getAuthorities()
-        );
-
-        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         chain.doFilter(request, response);
     }
 }
