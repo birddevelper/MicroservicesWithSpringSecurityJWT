@@ -22,12 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import javax.validation.Valid;
-import java.util.Map;
 
 
-/**
- * @author hantsy
- */
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -47,7 +44,6 @@ public class AuthController {
                                                                         authRequest.getUsername(),
                                                                         authRequest.getPassword()
                                                                       ));
-
        log.info(" Authentication process ");
        log.info(" Username : " + authRequest.getUsername());
        log.info(" Password : " + authRequest.getPassword());
@@ -73,8 +69,6 @@ public class AuthController {
 
         log.info(" Refresh process ");
         log.info(" Username : " + tokenProvider.getAuthentication(refreshTokenRequest.getRefreshToken()).getPrincipal());
-
-
         String accessToken = this.tokenProvider.createToken(refreshTokenRequest.getRefreshToken(), "access");
         String refreshToken = this.tokenProvider.createToken(refreshTokenRequest.getRefreshToken(), "refresh");
 
