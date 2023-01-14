@@ -10,8 +10,8 @@ COPY .mvn .mvn
 # Copy the pom.xml file
 COPY ./pom.xml ./pom.xml
 
-RUN chmod 755 /app/mvnw
-RUN ./mvnw dependency:go-offline -B -Dmaven.artifact.threads=35
+RUN chmod 755 mvnw
+RUN ./mvnw dependency:go-offline -B
 
 
 # Copy the project source
