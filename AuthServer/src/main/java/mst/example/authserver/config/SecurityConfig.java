@@ -47,16 +47,6 @@ public class SecurityConfig {
   }
 
 
-/*  @Bean
-  public AuthenticationManager authenticationManager(
-          AuthenticationConfiguration authenticationConfiguration ) throws Exception {
-    PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
-    return authenticationConfiguration.
-            .withUser("admin").password(encoder.encode("admin")).roles("ADMIN", "USER").and()
-            .withUser("mosy").password(encoder.encode("1234")).roles("USER").and().and().build();
-  }*/
-
 
   @Bean
   public AuthenticationManager authenticationManager(
@@ -90,13 +80,12 @@ public class SecurityConfig {
 
     // Set permissions on endpoints
     http.authorizeRequests()
-        // Swagger endpoints must be publicly accessible
         .antMatchers("/auth/**" )
         .permitAll()
         // Our private endpoints
         .anyRequest()
         .authenticated();
-        // Set up oauth2 resource server
+
 
 
     http.addFilterBefore(jwtTokenAuthenticationFilter,

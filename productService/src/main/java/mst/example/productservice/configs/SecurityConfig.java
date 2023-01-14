@@ -59,9 +59,6 @@ public class SecurityConfig {
 
         .antMatchers("/products/public" )
         .permitAll()
-        // Our private endpoints
-        .antMatchers("/products/user").hasRole("USER")
-        .antMatchers("/products/admin").hasRole("ADMIN")
         .anyRequest()
         .authenticated();
         // Set up oauth2 resource server
