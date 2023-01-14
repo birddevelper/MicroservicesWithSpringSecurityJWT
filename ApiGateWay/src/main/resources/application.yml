@@ -1,10 +1,12 @@
-
 jwt:
-  secretKey: ${JWT_KEY}
+  secret: ecf1222c-88fd-47f3-988f-bdd78bade1ad
 
 server:
   port: 8010
 spring:
+  redis:
+    host: redis
+    port: 6379
   application:
     name: gateway
   cloud:
@@ -13,11 +15,16 @@ spring:
         - id: product-service
           uri: http://productService:8084
           predicates:
-            - Path=/products/**
+            - Path=/api/products/**
           filters:
-            - StripPrefix=0
+            - StripPrefix=1
+            - name : RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 1
+                redis-rate-limiter.burstCapacity: 2
+                redis-rate-limiter.requestedTokens: 2
         - id: auth-service
-          uri: http://authService:8080 #
+          uri: http://authService:8080
           predicates:
             - Path=/auth/**
           filters :
