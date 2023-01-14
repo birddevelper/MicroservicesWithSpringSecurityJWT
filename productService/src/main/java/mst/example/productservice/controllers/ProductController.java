@@ -33,7 +33,7 @@ public class ProductController {
 
 
     @GetMapping("productList")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public String ProductList(){
 
         return "Products List here!";
