@@ -2,6 +2,6 @@
 
 Securing And Rate Limiting Endpoints With Spring Cloud Gateway, Spring Security And JWT
 
-In this project, it is explained how to implement routing, securing and rate limiting tasks in microservices architecture using Spring Cloud Gateway.
+In this project, it is explained how to implement routing, securing and rate limiting features in microservices architecture using Spring Cloud Gateway.
 
 To read the tutorial , go to [Securing And Rate Limiting Endpoints With Spring Cloud Gateway, Spring Security And JWT](https://mshaeri.com/blog/securing-and-rate-limiting-endpoints-with-spring-cloud-gateway-spring-security-and-jwt/)
